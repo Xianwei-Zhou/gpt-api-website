@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>与AI助手聊天</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="main-header">
+    <nav>
+        <a href="index.html" class="logo">返回首页</a>
+        <ul class="main-menu">
+            <li><a href="#">产品</a></li>
+            <li><a href="#">服务</a></li>
+            <li><a href="#">支持</a></li>
+            <li><a href="#">购买</a></li>
+        </ul>
+    </nav>
+</header>
+<main class="chat-main">
+    <div class="messages"></div>
+</main>
+<form id="messageForm" class="message-form">
+    <textarea name="message" placeholder="输入消息" rows="1" autocomplete="off"></textarea>
+    <select id="modelSelector" name="model">
+        <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+        <option value="gpt-4">GPT-4 (速度较慢)</option>
+    </select>
+    <button type="submit">发送</button>
+</form>
+<script src="scripts.js"></script>
+</body>
+</html>
