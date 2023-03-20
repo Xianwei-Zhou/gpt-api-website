@@ -9,18 +9,22 @@ from steamship import Steamship
 
 app = Flask(__name__)
 CORS(app)
+
+# 配置 Redis URL
+# app.config["RATELIMIT_STORAGE_URL"] = "redis://localhost:6379"
+
 proxy = "http://127.0.0.1:18081"
 os.environ["http_proxy"] = proxy
 os.environ["https_proxy"] = proxy
+
 # 配置API密钥
 load_dotenv()
 api_key = os.environ.get("OPENAI_API_KEY")
 openai.api_key = api_key
 
-
 # gpt4.0
 try:
-    client = Steamship(workspace="my-unique-name", api_key="963DB91D-64BD-464C-90E5-97196F500B7D")
+    client = Steamship(workspace="my-unique-name")
     generator = client.use_plugin('gpt-4')
 
 except:
@@ -75,17 +79,6 @@ def ask():
     assistant_answer = get_answer(user_question, model)
     return jsonify({"answer": assistant_answer})
 
-    # task = generator.generate(text=user_question)
-    # # print(task.output)
-    # task.wait()
-    # print(task.output.blocks[0].text)
-    # print(task.output.text)
-
-    # Print the output
-    # print(task.output.blocks[0].text)
-    # assistant_answer = get_answer(user_question)
-    # return jsonify({"answer": task.output.blocks[0].text})
-
 
 @app.route('/<path:path>')
 def serve_static(path):
@@ -99,7 +92,6 @@ def chat():
 
 @app.route('/', methods=['GET'])
 def index():
-    # return send_from_directory('.', 'templates/index.html')
     return render_template('index.html')
 
 
