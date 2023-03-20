@@ -69,11 +69,5 @@ window.addEventListener("load", () => {
         }
     }
 
-    messages.addEventListener("click", () => {
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNodeContents(messages);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    });
+    
 });
