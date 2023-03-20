@@ -1,10 +1,10 @@
 import openai
 from flask_cors import CORS
 import os
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-
+from dotenv import load_dotenv
 from steamship import Steamship
 
 app = Flask(__name__)
@@ -13,14 +13,18 @@ proxy = "http://127.0.0.1:18081"
 os.environ["http_proxy"] = proxy
 os.environ["https_proxy"] = proxy
 # 配置API密钥
-openai.api_key = "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"
+load_dotenv()
+api_key = os.environ.get("OPENAI_API_KEY")
+openai.api_key = api_key
 
-#gpt4.0
+
+# gpt4.0
 try:
-    client = Steamship(workspace="my-unique-name",api_key="963DB91D-64BD-464C-90E5-97196F500B7D")
+    client = Steamship(workspace="my-unique-name", api_key="963DB91D-64BD-464C-90E5-97196F500B7D")
     generator = client.use_plugin('gpt-4')
-except :print('e')
 
+except:
+    print('e')
 
 # 配置请求限制
 limiter = Limiter(
@@ -29,9 +33,11 @@ limiter = Limiter(
     default_limits=["15 per minute"]  # 更改这里的限制，例如 "5 per minute" 表示每分钟 5 个请求
 )
 
+
 def get_answer(question, model):
     if model == "gpt-4":
         task = generator.generate(text=question)
+
         task.wait()
         print(task.output.blocks[0].text)
         return task.output.blocks[0].text
@@ -45,6 +51,7 @@ def get_answer(question, model):
         )
         answer = response['choices'][0]['message']['content']
         return answer
+
 
 # 定义一个函数，输入是用户提问，输出是模型生成的答案
 # def get_answer(question):
@@ -85,10 +92,16 @@ def serve_static(path):
     return send_from_directory('.', path)
 
 
+@app.route('/chat', methods=['GET'])
+def chat():
+    return render_template('chat.html')
+
 
 @app.route('/', methods=['GET'])
 def index():
-    return send_from_directory('.', 'index.html')
+    # return send_from_directory('.', 'templates/index.html')
+    return render_template('index.html')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
