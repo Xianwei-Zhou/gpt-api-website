@@ -1,6 +1,10 @@
-window.addEventListener("load", () => {
-    // const sendMessageButton = document.querySelector("button[type='submit']");
+function handleFunctionType(functionType, previousMessages=false) {
+    localStorage.setItem("functionType", functionType);
+    localStorage.setItem("previousMessages", JSON.stringify(previousMessages));
+    window.location.href = '../templates/chat.html';
+}
 
+window.addEventListener("load", () => {
     const messageForm = document.getElementById("messageForm");
     const messages = document.querySelector(".messages");
     const modelSelector = document.getElementById("modelSelector");
@@ -21,53 +25,82 @@ window.addEventListener("load", () => {
 
 
 
+
     function addMessage(senderType, sender, content) {
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("message");
-        messageElement.classList.add(senderType === "user" ? "user-message" : "server-message");
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message");
+    messageElement.classList.add(senderType === "user" ? "user-message" : "server-message");
 
-        // 处理换行符
-        content = content.replace(/\r?\n/g, "<br>");
+    // 处理换行符
+    content = content.replace(/\r?\n/g, "<br>");
 
-        // 处理代码块
-        content = content.replace(/```(?:\w+\n)?([\s\S]*?)```/g, (_, code) => {
-            return '<pre><code>' + code.trim().replace(/<br>/g, "\n") + '</code></pre>';
-        });
+    // 处理代码块
+    content = content.replace(/```(?:\w+\n)?([\s\S]*?)```/g, (_, code) => {
+        return '<pre><code>' + code.trim().replace(/<br>/g, "\n") + '</code></pre>';
+    });
 
-        // 处理整行的数学公式
-        content = content.replace(/^\$\$([\s\S]*?)\$\$/gm, (_, equation) => {
-            return '<div class="math">' + equation.trim().replace(/<br>/g, "\n") + '</div>';
-        });
+    // 处理整行的数学公式
+    content = content.replace(/^\$\$([\s\S]*?)\$\$/gm, (_, equation) => {
+        return '<div class="math">' + equation.trim().replace(/<br>/g, "\n") + '</div>';
+    });
 
-        messageElement.innerHTML = `<strong>${sender}:</strong> ${content}`;
+    // 将消息内容包裹在一个具有 .message-content 类的 span 元素中
+    messageElement.innerHTML = `<strong>${sender}:</strong> ${content}`;
         messages.appendChild(messageElement);
         messages.scrollTop = messages.scrollHeight;
 
-        // 渲染数学公式
-        MathJax.typeset([messageElement]);
+    // 渲染数学公式
+    MathJax.typeset([messageElement]);
+}
+
+
+function getPreviousMessages() {
+    const messages = [];
+    const messageElements = document.querySelectorAll('.messages > div');
+    const startIndex = Math.max(0, messageElements.length - 6); // 最近3组对话（6条消息）
+
+    for (let i = startIndex; i < messageElements.length; i++) {
+        const element = messageElements[i];
+        const role = element.classList.contains('message-user') ? 'user' : 'assistant';
+        const content = element.querySelector('.message-content').innerText;
+
+        messages.push({ role, content });
     }
 
-
+    return messages;
+}
     async function getAnswerFromServer(question, model) {
+        const pvMessages = JSON.parse(localStorage.getItem("previousMessages"));
+        const functionType = localStorage.getItem("functionType");
+        let pviousMessages=[];
+        if (pvMessages){
+        pviousMessages = getPreviousMessages();}
+
         try {
             const response = await fetch("/ask", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({question: question, model: model}),
+                body: JSON.stringify({
+                    question: question,
+                    model: model,
+                    function: functionType,
+                    previous_messages: pviousMessages
+                }),
             });
             if (response.ok) {
                 const data = await response.json();
                 return data["answer"];
             } else {
-                throw new Error("Error: Unable to send message.");
+                throw new Error("抱歉，请稍后重试");
             }
         } catch (error) {
             console.error("Error calling the server: ", error.message);
-            return `抱歉，出现了一个问题：${error.message}`;
+            return `抱歉，出现了一个问题：${error.message},请稍后重试`;
         }
     }
+
 
 
 });

@@ -10,13 +10,13 @@ from steamship import Steamship
 app = Flask(__name__)
 CORS(app)
 
+
 # 配置 Redis URL
 # app.config["RATELIMIT_STORAGE_URL"] = "redis://localhost:6379"
 
 proxy = "http://127.0.0.1:18081"
 os.environ["http_proxy"] = proxy
 os.environ["https_proxy"] = proxy
-
 # 配置API密钥
 load_dotenv()
 api_key = os.environ.get("OPENAI_API_KEY")
@@ -24,7 +24,7 @@ openai.api_key = api_key
 
 # gpt4.0
 try:
-    client = Steamship(workspace="my-unique-name")
+    client = Steamship(workspace="my-unique-name", api_key="963DB91D-64BD-464C-90E5-97196F500B7D")
     generator = client.use_plugin('gpt-4')
 
 except:
@@ -38,45 +38,54 @@ limiter = Limiter(
 )
 
 
-def get_answer(question, model):
-    if model == "gpt-4":
-        task = generator.generate(text=question)
 
-        task.wait()
-        print(task.output.blocks[0].text)
-        return task.output.blocks[0].text
+def get_answer(question, model, context='', previous_messages=''):
+
+    if previous_messages=='':
+        messages = [
+            {"role": "system", "content": context},
+            {"role": "user", "content": question}]
     else:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": question},
-            ]
+        messages = [
+            {"role": "system", "content": context},previous_messages,
+            {"role": "user", "content": question}]
+    # if model == "gpt-4":
+    #     task = generator.generate(text=question)
+    #     task.wait()
+    #     print(task.output.blocks[0].text)
+    #     return task.output.blocks[0].text
+    # else:
+
+    # print(messages)
+    response = openai.ChatCompletion.create(
+            model=model,
+            messages=messages
         )
-        answer = response['choices'][0]['message']['content']
-        return answer
-
-
-# 定义一个函数，输入是用户提问，输出是模型生成的答案
-# def get_answer(question):
-#     response = openai.ChatCompletion.create(
-#         model="gpt-3.5-turbo",
-#         messages=[
-#             {"role": "system", "content": "You are a helpful assistant."},
-#             {"role": "user", "content": question},
-#         ]
-#     )
-#     answer = response['choices'][0]['message']['content']
-#     return answer
-
+    # print(response)
+    answer = response['choices'][0]['message']['content']
+    return answer
 
 @app.route('/ask', methods=['POST'])
-@limiter.limit("15 per minute")  # 请确保这里的限制与上面配置的限制一致
+@limiter.limit("25 per minute")  # 请确保这里的限制与上面配置的限制一致
 def ask():
     user_question = request.json['question']
     model = request.json['model']
-
-    assistant_answer = get_answer(user_question, model)
+    function = request.json.get('function', '')
+    previous_messages = request.json.get('previous_messages', '')
+    context = ''
+    if function == "translator":
+        context = "你现在是一个翻译器，你直接在中英文之间翻译接下来的文字："
+        previous_messages=''
+    elif function == "paraphrase":
+        context = "你现在是一个改述器，你直接将接下来的文章通过更换词、短语或表达方式等方法和原文尽量不相同，但语义相同："
+        previous_messages=''
+    elif function=="chatbot":
+        context = "你现在是我的朋友，请你以朋友的身份和我继续对话："
+    elif function=="en_teacher":
+        context = "你现在是我的英语老师，请你为我的英语作文进行评价和修改："
+    else:
+        previous_messages=''
+    assistant_answer = get_answer(user_question, model, context, previous_messages)
     return jsonify({"answer": assistant_answer})
 
 
@@ -92,6 +101,7 @@ def chat():
 
 @app.route('/', methods=['GET'])
 def index():
+    # return send_from_directory('.', 'templates/index.html')
     return render_template('index.html')
 
 
