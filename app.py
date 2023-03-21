@@ -10,7 +10,6 @@ from steamship import Steamship
 app = Flask(__name__)
 CORS(app)
 
-
 # 配置 Redis URL
 app.config["RATELIMIT_STORAGE_URL"] = "redis://localhost:6379"
 
@@ -47,9 +46,7 @@ limiter = Limiter(
 # else:
 
 def get_answer(question, model, context='', previous_messages=''):
-
-
-    if previous_messages=='':
+    if previous_messages == '':
         messages = [
             {"role": "system", "content": context},
             {"role": "user", "content": question}]
@@ -59,9 +56,9 @@ def get_answer(question, model, context='', previous_messages=''):
         messages.append({"role": "user", "content": question})
 
     response = openai.ChatCompletion.create(
-            model=model,
-            messages=messages
-        )
+        model=model,
+        messages=messages
+    )
     answer = response['choices'][0]['message']['content']
     return answer
 
@@ -81,9 +78,9 @@ def ask():
     elif function == "paraphrase":
         context = "你现在是一个改述器，你直接将接下来的文章通过更换词、短语或表达方式等方法和原文尽量不相同，但语义相同："
         # previous_messages=''
-    elif function=="chatbot":
+    elif function == "chatbot":
         context = "你现在是我的朋友，请你以朋友的身份和我继续对话："
-    elif function=="en_essay":
+    elif function == "en_essay":
         context = "你现在是我的英语老师，请你为我的英语作文进行评价和修改："
     # else:
     #     print(previous_messages)
@@ -104,7 +101,6 @@ def chat():
 
 @app.route('/', methods=['GET'])
 def index():
-    # return send_from_directory('.', 'templates/index.html')
     return render_template('index.html')
 
 
