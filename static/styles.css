@@ -162,7 +162,9 @@ body {
     flex-direction: column;
     flex-grow: 1;
     overflow-y: auto;
+    padding-top: 60px; /* 添加此行以向下移动聊天框 */
 }
+
 
 .messages {
     padding: 20px;

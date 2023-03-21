@@ -23,8 +23,8 @@
         <!-- ... -->
         <div class="hero-text">
             <h1>欢迎体验</h1>
-            <p>智能创意助手，助您畅想无限可能！</p>
-            <a href="{{ url_for('chat') }}" class="cta" id="learnMoreBtn" onclick="handleFunctionType('random_ask')">点击体验</a>
+            <p>目前已经支持连续对话，特色服务的三个图标也可点击</p>
+            <a href="{{ url_for('chat') }}" class="cta" id="learnMoreBtn" onclick="handleFunctionType('random_ask',true)">点击体验</a>
             <h2 class="main-subtitle">GPT-CN</h2>
         </div>
         <!-- ... -->
@@ -38,7 +38,7 @@
                 <h3>中英翻译器</h3>
                 <p>中英准确地道互译</p>
             </div>
-            <div class="product-card" onclick="handleFunctionType('en_essay',false)">
+            <div class="product-card" onclick="handleFunctionType('en_essay',true)">
                 <img src="../static/a2.jpg" alt="英语作文修改">
                 <h3>英语作文修改</h3>
                 <p>英语老师般的指导修改</p>

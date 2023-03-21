@@ -12,11 +12,12 @@ CORS(app)
 
 
 # 配置 Redis URL
-# app.config["RATELIMIT_STORAGE_URL"] = "redis://localhost:6379"
+app.config["RATELIMIT_STORAGE_URL"] = "redis://localhost:6379"
 
-proxy = "http://127.0.0.1:18081"
-os.environ["http_proxy"] = proxy
-os.environ["https_proxy"] = proxy
+# 在服务器使用需要注释掉这段话
+# proxy = "http://127.0.0.1:18081"
+# os.environ["http_proxy"] = proxy
+# os.environ["https_proxy"] = proxy
 # 配置API密钥
 load_dotenv()
 api_key = os.environ.get("OPENAI_API_KEY")
@@ -38,32 +39,32 @@ limiter = Limiter(
 )
 
 
+# if model == "gpt-4":
+#     task = generator.generate(text=question)
+#     task.wait()
+#     print(task.output.blocks[0].text)
+#     return task.output.blocks[0].text
+# else:
 
 def get_answer(question, model, context='', previous_messages=''):
+
 
     if previous_messages=='':
         messages = [
             {"role": "system", "content": context},
             {"role": "user", "content": question}]
     else:
-        messages = [
-            {"role": "system", "content": context},previous_messages,
-            {"role": "user", "content": question}]
-    # if model == "gpt-4":
-    #     task = generator.generate(text=question)
-    #     task.wait()
-    #     print(task.output.blocks[0].text)
-    #     return task.output.blocks[0].text
-    # else:
+        messages = [{"role": "system", "content": context}]
+        messages.extend(previous_messages)
+        messages.append({"role": "user", "content": question})
 
-    # print(messages)
     response = openai.ChatCompletion.create(
             model=model,
             messages=messages
         )
-    # print(response)
     answer = response['choices'][0]['message']['content']
     return answer
+
 
 @app.route('/ask', methods=['POST'])
 @limiter.limit("25 per minute")  # 请确保这里的限制与上面配置的限制一致
@@ -72,19 +73,21 @@ def ask():
     model = request.json['model']
     function = request.json.get('function', '')
     previous_messages = request.json.get('previous_messages', '')
+
     context = ''
     if function == "translator":
         context = "你现在是一个翻译器，你直接在中英文之间翻译接下来的文字："
-        previous_messages=''
+        # previous_messages=''
     elif function == "paraphrase":
         context = "你现在是一个改述器，你直接将接下来的文章通过更换词、短语或表达方式等方法和原文尽量不相同，但语义相同："
-        previous_messages=''
+        # previous_messages=''
     elif function=="chatbot":
         context = "你现在是我的朋友，请你以朋友的身份和我继续对话："
-    elif function=="en_teacher":
+    elif function=="en_essay":
         context = "你现在是我的英语老师，请你为我的英语作文进行评价和修改："
-    else:
-        previous_messages=''
+    # else:
+    #     print(previous_messages)
+
     assistant_answer = get_answer(user_question, model, context, previous_messages)
     return jsonify({"answer": assistant_answer})
 
