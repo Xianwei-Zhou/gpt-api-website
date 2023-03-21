@@ -54,7 +54,6 @@ window.addEventListener("load", () => {
     }
 
 
-
     function getPreviousMessages() {
         const shouldKeepPreviousMessages = JSON.parse(localStorage.getItem("previousMessages"));
         if (!shouldKeepPreviousMessages) {
