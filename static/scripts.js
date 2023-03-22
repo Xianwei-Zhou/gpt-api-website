@@ -53,6 +53,29 @@ window.addEventListener("load", () => {
         MathJax.typeset([messageElement]);
     }
 
+    function isChineseChar(char) {
+        const code = char.charCodeAt(0);
+        return (code >= 0x4e00 && code <= 0x9fff) || (code >= 0x3400 && code <= 0x4dbf);
+    }
+
+    function countTokens(messages) {
+        let numTokens = 0;
+        messages.forEach(message => {
+            numTokens += 4;
+            Object.values(message).forEach(value => {
+                for (let i = 0; i < value.length; i++) {
+                    numTokens += isChineseChar(value[i]) ? 2 : 1;
+                }
+            });
+            if (message.hasOwnProperty('name')) {
+                numTokens -= 1;
+            }
+        });
+        numTokens += 2;
+        return numTokens;
+    }
+
+
 
     function getPreviousMessages() {
         const shouldKeepPreviousMessages = JSON.parse(localStorage.getItem("previousMessages"));
@@ -62,20 +85,28 @@ window.addEventListener("load", () => {
 
         const messages = [];
         const messageElements = document.querySelectorAll('.messages > div');
-        console.log("Message elements: ", messageElements); // 在这里添加 console.log
+        // console.log("Message elements: ", messageElements);
 
-        const startIndex = Math.max(0, messageElements.length - 14); // 最近3组对话（6条消息）
+        let tokenCount = 0;
 
-        for (let i = startIndex; i < messageElements.length; i++) {
+        for (let i = messageElements.length - 1; i >= 0; i--) {
             const element = messageElements[i];
             const role = element.classList.contains('user-message') ? 'user' : 'assistant';
             const contentElement = element.querySelector('.message-content');
             const content = contentElement ? contentElement.innerText.trim() : '';
 
             if (content) {
-                messages.push({role, content});
+                const newMessage = {role, content};
+                const newTokenCount = tokenCount + countTokens([newMessage]);
+                if (newTokenCount <= 4000) {
+                    messages.unshift(newMessage);
+                    tokenCount = newTokenCount;
+                } else {
+                    break;
+                }
             }
         }
+        console.log("tokenCount: " + tokenCount)
 
         return messages;
     }
@@ -90,13 +121,7 @@ window.addEventListener("load", () => {
         if (pvMessages) {
             pviousMessages = getPreviousMessages();
         }
-        // ...
-        if (pvMessages) {
-            console.log("Before getPreviousMessages: ", pviousMessages);
-            pviousMessages = getPreviousMessages();
-            console.log("After getPreviousMessages: ", pviousMessages);
-        }
-        // ...
+
         try {
             const response = await fetch("/ask", {
                 method: "POST",
@@ -121,6 +146,5 @@ window.addEventListener("load", () => {
             return `抱歉，出现了一个问题：${error.message},请稍后重试`;
         }
     }
-
 
 });
