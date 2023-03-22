@@ -73,15 +73,15 @@ def ask():
 
     context = ''
     if function == "translator":
-        context = "你现在是一个翻译器，你直接在中英文之间翻译接下来的文字："
-        # previous_messages=''
+        context = "你现在是一个翻译器，你直接在中英文之间翻译接下来的文字，无需任何解释"
+        previous_messages=''
     elif function == "paraphrase":
-        context = "你现在是一个改述器，你直接将接下来的文章通过更换词、短语或表达方式等方法和原文尽量不相同，但语义相同："
+        context = "你现在是一个改述器，你直接将接下来的文章通过更换词、短语或表达方式等方法和原文尽量不相同，但语义相同。"
         # previous_messages=''
     elif function == "chatbot":
         context = "你现在是我的朋友，请你以朋友的身份和我继续对话："
     elif function == "en_essay":
-        context = "你现在是我的英语老师，请你为我的英语作文进行评价和修改："
+        context = "你现在是我的英语老师，我是一名天资不太高的学生，需要你给我详细的指导，如修改作文解释语法等。在遇到我不理解的地方希望你能循序渐进的指导我直至我弄懂。"
     # else:
     #     print(previous_messages)
 

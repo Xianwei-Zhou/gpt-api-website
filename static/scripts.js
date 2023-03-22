@@ -1,9 +1,55 @@
 function handleFunctionType(functionType, previousMessages = false) {
     localStorage.setItem("functionType", functionType);
     localStorage.setItem("previousMessages", JSON.stringify(previousMessages));
-    window.location.href = '../templates/chat.html';
+    window.location.href = "/templates/chat.html";
 }
 
+function updateTextBoxes(functionType) {
+    const textBox1 = document.getElementById("text-box-1");
+    const textBox2 = document.getElementById("text-box-2");
+    const textBox3 = document.getElementById("text-box-3");
+    const textBox4 = document.getElementById("text-box-4");
+    textBox4.innerHTML = "更多功能可在\"特色服务\"处体验<br>有任何问题欢迎联系我们...";
+    switch (functionType) {
+        case "translator":
+            textBox1.innerHTML = "请直接输入中文或英文";
+            textBox2.innerHTML = "chatgpt会自动翻译（中译英英译中均可）";
+            textBox3.innerHTML = "该模式不支持上下文";
+            break;
+        case "paraphrase":
+            textBox1.innerHTML = "不保证论文降重效果，需要专业查重软件验证";
+            textBox2.innerHTML = "可以多次生成，每次生成结果都不同";
+            textBox3.innerHTML = "支持上下文，可以通过连续对话不断指定修改段落格式等";
+            break;
+        case "chatbot":
+            textBox1.innerHTML = "FunctionType2: 提示文本1";
+            textBox2.innerHTML = "FunctionType2: 提示文本2";
+            textBox3.innerHTML = "FunctionType2: 提示文本3";
+            break;
+        case "en_essay":
+            textBox1.innerHTML = "和你对话的是你的私人英语老师";
+            textBox2.innerHTML = "大胆地说出你的困惑，老师会为你一一解答";
+            textBox3.innerHTML = "支持连续对话，在问答中更好地掌握语言";
+            break;
+        // 其他functionType的情况
+        default:
+
+            textBox1.innerHTML = "提问应简洁清晰。如你可以解释【xx】吗，可以举【几】个例子吗";
+            textBox2.innerHTML = "可指明角色，如你现在是【角色】，【要做什么】。下面我【需求】";
+            textBox3.innerHTML = "可连续对话，在追问中得到更详细的回答，最多支持约2000字上下文";
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // 从localStorage获取functionType
+    const functionType = localStorage.getItem("functionType");
+
+    // 调用函数并传入functionType值
+    if (functionType) {
+        updateTextBoxes(functionType);
+    }
+});
 window.addEventListener("load", () => {
     const messageForm = document.getElementById("messageForm");
     const messages = document.querySelector(".messages");

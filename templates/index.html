@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPT体验</title>
-    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
 <header class="main-header">
@@ -23,8 +23,8 @@
         <!-- ... -->
         <div class="hero-text">
             <h1>欢迎体验</h1>
-            <p>目前已经支持连续对话，特色服务的三个图标也可点击</p>
-            <a href="{{ url_for('chat') }}" class="cta" id="learnMoreBtn" onclick="handleFunctionType('random_ask',true)">点击体验</a>
+{#            <p>目前已经支持连续对话，特色服务的三个图标也可点击</p>#}
+            <a href="/chat" class="cta" id="learnMoreBtn" onclick="handleFunctionType('random_ask',true)">点击体验</a>
             <h2 class="main-subtitle">GPT-CN</h2>
         </div>
         <!-- ... -->
@@ -39,9 +39,9 @@
                 <p>中英准确地道互译</p>
             </div>
             <div class="product-card" onclick="handleFunctionType('en_essay',true)">
-                <img src="../static/a2.jpg" alt="英语作文修改">
-                <h3>英语作文修改</h3>
-                <p>英语老师般的指导修改</p>
+                <img src="../static/a2.jpg" alt="英语老师">
+                <h3>英语老师</h3>
+                <p>你的私人英语老师</p>
             </div>
             <div class="product-card" onclick="handleFunctionType('paraphrase',false)">
                 <img src="../static/a3.png" alt="文章降重">
@@ -67,7 +67,7 @@
 
     </section>
 </main>
-<script src="../static/scripts.js"></script>
+<script src="/static/scripts.js"></script>
 </body>
 </html>
 

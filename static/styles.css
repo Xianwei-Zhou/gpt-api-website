@@ -263,26 +263,26 @@ body {
   font-family: 'Microsoft YaHei UI Light', sans-serif;
   color: black;
   background-color: #e3e1e1;
-  padding: 20px;
-  width: 50%;
+  padding: 12px;
+  width: 70%;
 }
 
 .text-box-1 {
   top: 20%;
-  left: 25%;
+  left: 15%;
 }
 
 .text-box-2 {
-  top: 30%;
-  left: 25%;
+  top: 32%;
+  left: 15%;
 }
 
 .text-box-3 {
-  top: 45%;
-  left: 25%;
+  top: 44%;
+  left: 15%;
 }
 
 .text-box-4 {
-  top: 55%;
-  left: 25%;
+  top: 56%;
+  left: 15%;
 }
