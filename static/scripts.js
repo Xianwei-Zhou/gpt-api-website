@@ -12,10 +12,13 @@ window.addEventListener("load", () => {
         const messageInput = event.target.message;
         event.preventDefault();
         if (messageInput.value.trim()) {
+
             showToast();
         }
 
         if (messageInput.value.trim()) {
+            hideHintTextBoxes();
+
             addMessage("user", "我", messageInput.value);
             const gptReply = await getAnswerFromServer(messageInput.value, modelSelector.value);
             addMessage("server", "ChatGPT", gptReply);
@@ -43,7 +46,6 @@ window.addEventListener("load", () => {
         });
 
         // 将消息内容包裹在一个具有 .message-content 类的 span 元素中
-        // messageElement.innerHTML = `<strong>${sender}:</strong> ${content}`;
         messageElement.innerHTML = `<strong>${sender}:</strong> <span class="message-content">${content}</span>`;
 
         messages.appendChild(messageElement);
@@ -84,8 +86,6 @@ window.addEventListener("load", () => {
 
         const messages = [];
         const messageElements = document.querySelectorAll('.messages > div');
-        // console.log("Message elements: ", messageElements);
-
         let tokenCount = 0;
 
         for (let i = messageElements.length - 1; i >= 0; i--) {
@@ -153,5 +153,13 @@ window.addEventListener("load", () => {
             toast.style.display = "none";
         }, 2000);
     }
+
+    function hideHintTextBoxes() {
+        const hintTextBoxes = document.querySelectorAll(".text-box-hint");
+        for (const textBox of hintTextBoxes) {
+            textBox.style.display = "none";
+        }
+    }
+
 
 });

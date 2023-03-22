@@ -6,9 +6,9 @@
 }
 
 body {
-    
-    background-color: #f1f1f1;   /*'static/background.png'*/
-    
+
+    background-color: rgba(255, 255, 255, 0.5); /*'static/background.png'*/
+
 }
 
 .main-header {
@@ -73,11 +73,13 @@ nav {
     font-size: 48px;
     margin-bottom: 20px;
 }
+
 .main-subtitle {
     margin-top: 40px;
     color: #ffffff;
     font-size: 52px;
 }
+
 .hero-text p {
     font-size: 24px;
     margin-bottom: 40px;
@@ -90,6 +92,7 @@ nav {
     padding: 10px 20px;
     border-radius: 5px;
 }
+
 /* 新增特色产品样式 */
 .featured-products {
     padding: 60px 20px;
@@ -140,6 +143,7 @@ body {
     flex-direction: column;
     height: 100vh;
 }
+
 .chat-header {
     background-color: #007aff;
     color: #ffffff;
@@ -230,4 +234,55 @@ body {
     font-size: 14px;
     display: none;
     z-index: 100;
+}
+
+body {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.text-box {
+    position: absolute;
+    width: 30%; /* 减小宽度以增加间距 */
+    height: 60%;
+    background-color: rgb(223, 226, 224); /* 设置框的颜色 */
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.5em;
+    font-family: 'Microsoft Yahei', serif; /* 将 Arial 字体作为示例 */
+    color: #5a5959; /* 设置文字颜色为白色 */
+}
+.text-box-1,
+.text-box-2,
+.text-box-3,
+.text-box-4 {
+  position: absolute;
+  text-align: center;
+  font-family: 'Microsoft YaHei UI Light', sans-serif;
+  color: black;
+  background-color: #e3e1e1;
+  padding: 20px;
+  width: 50%;
+}
+
+.text-box-1 {
+  top: 20%;
+  left: 25%;
+}
+
+.text-box-2 {
+  top: 30%;
+  left: 25%;
+}
+
+.text-box-3 {
+  top: 45%;
+  left: 25%;
+}
+
+.text-box-4 {
+  top: 55%;
+  left: 25%;
 }
