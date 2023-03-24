@@ -1,0 +1,198 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #e6e6e6;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.main-menu {
+    display: flex;
+    list-style: none;
+}
+
+.main-menu li {
+    margin-left: 30px;
+}
+
+.main-menu a {
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.chat-main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-top: 60px;
+}
+
+.messages {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.user-message {
+    background-color: #c6c6c6;
+    align-self: flex-end;
+}
+
+.server-message {
+    background-color: #00ccff;
+    color: #ffffff;
+}
+
+.message-form {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    background-color: #f2f2f2;
+    padding: 20px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message-form textarea {
+    flex-grow: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    resize: none;
+    overflow: auto;
+    max-height: 100px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    appearance: none;
+    -webkit-appearance: none; /* 兼容 Safari 和 Chrome */
+    -moz-appearance: none;    /* 兼容 Firefox */
+}
+
+.message-form button {
+    background-color: #007aff;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px; /* 修改这里，增加按钮的大小 */
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.toast {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: none;
+    z-index: 100;
+}
+
+.text-box-1,
+.text-box-2,
+.text-box-3,
+.text-box-4 {
+    position: absolute;
+    text-align: center;
+    font-family: 'Microsoft YaHei UI Light', sans-serif;
+    color: black;
+    background-color: #e3e1e1;
+    padding: 12px;
+    width: 70%;
+}
+
+.text-box-1 {
+    top: 20%;
+    left: 15%;
+}
+
+.text-box-2 {
+    top: 32%;
+    left: 15%;
+}
+
+.text-box-3 {
+    top: 44%;
+    left: 15%;
+}
+
+.text-box-4 {
+    top: 56%;
+    left: 15%;
+}
+
+/* 媒体查询，适应不同的屏幕尺寸 */
+@media (max-width: 768px) {
+    .main-menu {
+        display: none;
+    }
+
+    .message {
+        max-width: 80%;
+    }
+
+    .text-box-1,
+    .text-box-2,
+    .text-box-3,
+    .text-box-4 {
+        width: 90%;
+        left: 5%;
+    }
+}
+@media screen and (max-width: 768px) {
+    /* 缩小图片大小 */
+    .product-card img {
+        width: 40%;
+        height: auto;
+    }
+
+    /* 缩小字号 */
+    body {
+        font-size: 0.8em;
+    }
+}

@@ -1,0 +1,172 @@
+/* index.html 中的样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #e6e6e6;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.main-menu {
+    display: flex;
+    list-style: none;
+}
+
+.main-menu li {
+    margin-left: 30px;
+}
+
+.main-menu a {
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.hero {
+    height: 60vh;
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-text {
+    text-align: center;
+    color: #ffffff;
+    margin-top: 15%
+}
+
+.hero-text h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.main-subtitle {
+    margin-top: 40px;
+    color: #ffffff;
+    font-size: 52px;
+}
+
+.hero-text p {
+    font-size: 24px;
+    margin-bottom: 40px;
+}
+
+/* 省略之前的代码，从 .cta 开始 */
+.cta {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #007aff;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* 新增特色产品样式 */
+.featured-products {
+    padding: 60px 20px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.product-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.product-card {
+    width: 300px;
+    margin-top: 40px;
+}
+
+.product-card img {
+    width: 50%;
+    height: auto;
+}
+
+.product-card h3 {
+    margin-top: 20px;
+    font-size: 24px;
+}
+
+/* 新增关于我们样式 */
+.about-us {
+    padding: 60px 20px;
+    background-color: #f2f2f2;
+    text-align: center;
+}
+
+/* 新增联系我们样式 */
+.contact-us {
+    padding: 60px 20px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+/* 媒体查询，适应不同的屏幕尺寸 */
+@media (max-width: 768px) {
+    .main-menu {
+        display: none;
+    }
+
+    .hero-text h1 {
+        font-size: 36px;
+    }
+
+    .main-subtitle {
+        font-size: 40px;
+    }
+
+    .hero-text p {
+        font-size: 18px;
+    }
+
+    .product-card {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+@media screen and (max-width: 768px) {
+    /* 缩小图片大小 */
+    .product-card img {
+        width: 40%;
+        height: auto;
+    }
+
+    /* 缩小字号 */
+    body {
+        font-size: 0.8em;
+    }
+}

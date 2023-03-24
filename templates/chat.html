@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>与AI助手聊天</title>
+    <link rel="stylesheet" href="/static/styles_chat.css">
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
     <script>
         MathJax = {
@@ -12,15 +16,9 @@
             }
         };
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>与AI助手聊天</title>
-    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
+
 <div id="text-box-1" class="text-box-1 text-box-hint">提问应简洁清晰，如：你可以解释【xx】吗，可以举【数字】个例子吗</div>
 <div id="text-box-2" class="text-box-2 text-box-hint">可指明角色，如：你现在是【角色】，【要做什么】。下面我将【需求】</div>
 <div id="text-box-3" class="text-box-3 text-box-hint">支持连续对话，可以在追问中得到更详细的回答，最多支持约2000字上下文</div>
@@ -45,12 +43,10 @@
     <div id="toast" class="toast">发送中...</div>
 
     <textarea name="message" placeholder="输入消息" rows="1" autocomplete="off"></textarea>
-    <select id="modelSelector" name="model">
-        <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-        <option value="gpt-4">GPT-4 (暂不支持)</option>
-    </select>
+
     <button type="submit">发送</button>
 </form>
+
 <script src="/static/scripts.js"></script>
 </body>
 </html>

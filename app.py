@@ -1,3 +1,5 @@
+import time
+
 import openai
 from flask_cors import CORS
 import os
@@ -54,11 +56,14 @@ def get_answer(question, model, context='', previous_messages=''):
         messages = [{"role": "system", "content": context}]
         messages.extend(previous_messages)
         messages.append({"role": "user", "content": question})
-
+    start_time = time.time()
     response = openai.ChatCompletion.create(
         model=model,
         messages=messages
     )
+    end_time = time.time()
+    print(f"API request duration: {end_time - start_time} seconds")
+
     answer = response['choices'][0]['message']['content']
     return answer
 
@@ -74,7 +79,7 @@ def ask():
     context = ''
     if function == "translator":
         context = "你现在是一个翻译器，你直接在中英文之间翻译接下来的文字，无需任何解释"
-        previous_messages=''
+        previous_messages = ''
     elif function == "paraphrase":
         context = "你现在是一个改述器，你直接将接下来的文章通过更换词、短语或表达方式等方法和原文尽量不相同，但语义相同。"
         # previous_messages=''

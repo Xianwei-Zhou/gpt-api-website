@@ -66,7 +66,7 @@ window.addEventListener("load", () => {
             hideHintTextBoxes();
 
             addMessage("user", "我", messageInput.value);
-            const gptReply = await getAnswerFromServer(messageInput.value, modelSelector.value);
+            const gptReply = await getAnswerFromServer(messageInput.value);
             addMessage("server", "ChatGPT", gptReply);
             messageInput.value = "";
         }
@@ -157,7 +157,7 @@ window.addEventListener("load", () => {
     }
 
 
-    async function getAnswerFromServer(question, model) {
+    async function getAnswerFromServer(question, model = 'gpt-3.5-turbo') {
         const pvMessages = JSON.parse(localStorage.getItem("previousMessages"));
         const functionType = localStorage.getItem("functionType");
         let pviousMessages = [];
