@@ -7,7 +7,6 @@ from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
-from steamship import Steamship
 
 app = Flask(__name__)
 CORS(app)
@@ -16,21 +15,14 @@ CORS(app)
 app.config["RATELIMIT_STORAGE_URL"] = "redis://localhost:6379"
 
 # 在服务器使用需要注释掉这段话
-# proxy = "http://127.0.0.1:18081"
-# os.environ["http_proxy"] = proxy
-# os.environ["https_proxy"] = proxy
+proxy = "http://127.0.0.1:18081"
+os.environ["http_proxy"] = proxy
+os.environ["https_proxy"] = proxy
 # 配置API密钥
 load_dotenv()
 api_key = os.environ.get("OPENAI_API_KEY")
 openai.api_key = api_key
 
-# gpt4.0
-try:
-    client = Steamship(workspace="my-unique-name", api_key="963DB91D-64BD-464C-90E5-97196F500B7D")
-    generator = client.use_plugin('gpt-4')
-
-except:
-    print('e')
 
 # 配置请求限制
 limiter = Limiter(
@@ -39,13 +31,6 @@ limiter = Limiter(
     default_limits=["15 per minute"]  # 更改这里的限制，例如 "5 per minute" 表示每分钟 5 个请求
 )
 
-
-# if model == "gpt-4":
-#     task = generator.generate(text=question)
-#     task.wait()
-#     print(task.output.blocks[0].text)
-#     return task.output.blocks[0].text
-# else:
 
 def get_answer(question, model, context='', previous_messages=''):
     if previous_messages == '':
@@ -87,8 +72,7 @@ def ask():
         context = "你现在是我的朋友，请你以朋友的身份和我继续对话："
     elif function == "en_essay":
         context = "你现在是我的英语老师，我是一名天资不太高的学生，需要你给我详细的指导，如修改作文解释语法等。在遇到我不理解的地方希望你能循序渐进的指导我直至我弄懂。"
-    # else:
-    #     print(previous_messages)
+
 
     assistant_answer = get_answer(user_question, model, context, previous_messages)
     return jsonify({"answer": assistant_answer})
