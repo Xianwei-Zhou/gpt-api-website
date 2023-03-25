@@ -98,7 +98,10 @@ window.addEventListener("load", () => {
         messages.scrollTop = messages.scrollHeight;
 
         // 渲染数学公式
-        MathJax.typeset([messageElement]);
+        MathJax.startup.promise.then(() => {
+            MathJax.typesetPromise([messageElement]);
+        });
+
     }
 
     function isChineseChar(char) {
